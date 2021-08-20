@@ -30,6 +30,7 @@ services:
   nginx:
     image: nginx:1.15-alpine
     container_name: nginx
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
     ports:
       - "80:80"
       - "443:443"
@@ -40,6 +41,7 @@ services:
   certbot:
     image: certbot/certbot
     container_name: certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
     volumes:
       - /opt/ssl/conf:/etc/letsencrypt
       - /opt/ssl/www:/var/www/certbot

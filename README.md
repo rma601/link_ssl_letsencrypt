@@ -74,10 +74,16 @@ location /.well-known/acme-challenge/ {
 
 ```
 
-Finally, we need to run a shell script. This script places fake files to get nginx up and running, then replaces them with real files that we can use to grab a certificate. I have included a copy of the script in this github repo, for ease of access. 
+Finally, we  add the required firewall rules and run a shell script. This script places fake files to get nginx up and running, then replaces them with real files that we can use to grab a certificate. I have included a copy of the script in this github repo, for ease of access. 
 
 
 ```
+## You need port 80 and 443 open in order to have your certificates validated by certbot and letsencrypt
+
+firewall-cmd --permanent --add-service=http
+firewall-cmd --permanent --add-service=https
+firewall-cmd --reload
+
 ## edit the script with your favorite text editor, and set the following values ##
 
 domains=(your.fqdn.org)
@@ -124,4 +130,14 @@ TLS_KEY_PATH=/ssl/conf/live/your.fqdn.org/privkey.pem
 #SECURE_COOKIES=false
 ```
 
-Now, tear down and recreate your containers. You will need to add `-v /opt/ssl:/ssl` to your docker run commands, or `- /opt/ssl:/ssl` to the `volumes` sections of your docker compose file. You will also need to change your port mapping to reflect the ssl configuration for your nodes. By default, port `6689` is used for all HTTPS communications.  
+Now, tear down and recreate your containers. You will need to add `-v /opt/ssl:/ssl` to your docker run commands, or `- /opt/ssl:/ssl` to the `volumes` sections of your docker compose file. You will also need to change your port mapping to reflect the ssl configuration for your nodes. By default, port `6689` is used for all HTTPS communications.
+
+You will likely also need to open and close the appropriate ports:
+
+```
+firewall-cmd --permanent --add-port=6689
+firewall-cmd --permanent --remove-port=6688
+firewall-cmd --reload
+```
+
+Thats it. You have secured your containers using letsencrypt certificates. Go have a drink, or something. 

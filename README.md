@@ -132,12 +132,13 @@ TLS_KEY_PATH=/ssl/conf/live/your.fqdn.org/privkey.pem
 #SECURE_COOKIES=false
 ```
 
-Now, tear down and recreate your containers. You will need to add `-v /opt/ssl:/ssl` to your docker run commands, or `- /opt/ssl:/ssl` to the `volumes` sections of your docker compose file. You will also need to change your port mapping to reflect the ssl configuration for your nodes. By default, port `6689` is used for all HTTPS communications.
+Now, tear down and recreate your containers. You will need to add `-v /opt/ssl:/ssl` to your docker run commands, or `- /opt/ssl:/ssl` to the `volumes` sections of your docker compose file. You will also need to change your port mapping to reflect the ssl configuration for your nodes. By default, port `6689` is used for all HTTPS communications. If you are running an OCR node, you will need to configure a seperate port so that the two services do not conflict. I chose to use `6690` as my secondary port. 
 
 You will likely also need to open and close the appropriate ports:
 
 ```
 firewall-cmd --permanent --add-port=6689
+firewall-cmd --permanent --add-port=6690
 firewall-cmd --permanent --remove-port=6688
 firewall-cmd --reload
 ```

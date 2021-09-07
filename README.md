@@ -9,7 +9,7 @@ This guide follows [this guide](https://pentacent.medium.com/nginx-and-lets-encr
 - We will not be covering steps to get your node up and running. Please follow the [official guidance](https://docs.chain.link/docs/running-a-chainlink-node/) before using this documentation.
 - Steps outlined here will be related to a RHEL-based environment. You may need to translate your firewall commands accordingly
 - I typically throw configurations in /opt, though you may want to put them elsewhere. 
-- You will need to have `docker-compose` installed. 
+- You will need to have `docker-compose` installed. [Here are some instructions on how to do that.](https://docs.docker.com/compose/install/) 
 
 ## Obtaining Certificates Using Docker
 
